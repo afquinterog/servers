@@ -1,0 +1,109 @@
+<?php
+
+namespace App\Console\Commands;
+
+use Illuminate\Console\Command;
+use App\Traits\RemoteExecution;
+use App\Models\Server;
+use Symfony\Component\Process\Process;
+use Symfony\Component\Process\Exception\ProcessFailedException;
+
+class LinkUiCommand extends Command
+{
+    use RemoteExecution;
+
+    /**
+     * The name and signature of the console command.
+     *
+     * @var string
+     */
+    protected $signature = 'devenv:connect-api {api} 
+                            {--ui= : uI app unique id}
+                            {--domain= : application domain}
+                            {--admin=master : admin app branch}
+                            {--accounts=master : accounts app branch}
+                            {--txact=master : txact app branch}
+                            ';
+
+    /**
+     * The console command description.
+     *
+     * @var string
+     */
+    protected $description = 'Connect ui applications with venture api';
+
+    /**
+     * Create a new command instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        parent::__construct();
+    }
+
+    /**
+     * Execute the console command.
+     *
+     * @return mixed
+     */
+    public function handle()
+    {
+        //Get arguments
+        $api = $this->argument('api');
+
+        //Get options
+        $ui = $this->option('ui');
+        $domain = $this->option('domain');
+        $adminBranch = $this->option('admin');
+        $accountsBranch = $this->option('accounts');
+        $txactBranch = $this->option('txact');
+
+        $ui = Server::find($ui);
+
+        if( $ui->id ){
+            $this->info("Connecting {$ui->name} to api ...");
+
+            $command =  
+             " envoy run  execute " .  
+             " --route=/home/ubuntu " . 
+             " --server=server " ;
+
+            $task = "cd /home/ubuntu/scripts \n
+                    ./init.sh $api $domain";
+
+            //echo $task;
+            //echo $ui->ip . " / ". $task;
+            $result = $this->executeRemoteTask($ui->ip, $task, $command);
+            echo $result;
+           
+            //Configure admin application
+            $task = "cd /home/ubuntu/scripts \n
+                    ./update-code.sh {$api} {$domain} admin {$adminBranch}  ";
+            $result = $this->executeRemoteTask($ui->ip, $task, $command); 
+            $this->info($result);
+
+            $task = "cd /home/ubuntu/scripts \n
+                    ./update-code.sh {$api} {$domain} accounts {$accountsBranch}  ";
+            $result = $this->executeRemoteTask($ui->ip, $task, $command);
+            $this->info($result);
+            
+            $task = "cd /home/ubuntu/scripts \n
+                    ./update-code.sh {$api} {$domain} txact {$txactBranch}  ";
+            $result = $this->executeRemoteTask($ui->ip, $task, $command); 
+            $this->info($result);
+
+            $this->info("{$ui->name} has been connected to the api properly");
+            
+        }
+
+        
+
+        
+
+        //$result = $this->executeRemoteTask($ip, $task, $command);
+
+
+
+    }
+}

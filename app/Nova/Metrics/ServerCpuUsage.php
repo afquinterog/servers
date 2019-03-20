@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use Laravel\Nova\Metrics\Trend;
 use App\Models\ServerMetric;
 
-class ServerDisk extends Trend
+class ServerCpuUsage extends Trend
 {
     /**
      * Calculate the value of the metric.
@@ -16,9 +16,10 @@ class ServerDisk extends Trend
      */
     public function calculate(Request $request)
     {
-        $data = ServerMetric::where('server_id', $request->resourceId);
+        $data = ServerMetric::where('server_id', $request->resourceId)
+            ->where('metric_type_id', 1);
 
-        return $this->averageByHours($request, $data, 'value');
+        return $this->averageByHours($request, $data, 'value')->showLatestValue();
     }
 
     /**
@@ -31,7 +32,7 @@ class ServerDisk extends Trend
         return [
             12 => '12 Hours',
             24 => '24 Hours',
-            48 => '48 Hours',
+            168 => 'Last week',
         ];
     }
 
@@ -52,6 +53,6 @@ class ServerDisk extends Trend
      */
     public function uriKey()
     {
-        return 'server-disk';
+        return 'server-cpu-usage';
     }
 }

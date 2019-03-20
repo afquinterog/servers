@@ -56,7 +56,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
     protected function cards()
     {
         return [
-            new \App\Nova\Metrics\ServerDisk
+            new \App\Nova\Metrics\ServerDiskUsage
             //new Help,
             //new \App\Nova\Metrics\NewTickets,
             //new \App\Nova\Metrics\TicketsPerDay,

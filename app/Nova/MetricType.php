@@ -46,7 +46,7 @@ class MetricType extends Resource
             ID::make()->sortable(),
             Text::make('Code')->sortable(),
             Text::make('Description')->sortable(),
-            HasMany::make('Metrics')
+            HasMany::make('ServerMetrics')
         ];
     }
 

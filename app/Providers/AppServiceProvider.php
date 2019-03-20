@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Laravel\Telescope\TelescopeServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -13,7 +14,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //User::observe(UserObserver::class);
+        \App\Models\ServerMetric::observe(\App\Observers\MetricObserver::class);
     }
 
     /**
@@ -23,6 +24,17 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        if ($this->app->isLocal()) {
+            $this->app->register(TelescopeServiceProvider::class);
+        }
+
+        $this->app->bind(
+            'App\Cloud\GenericCloudProvider',
+            'App\Cloud\Aws'
+        );
+
+        $this->app->singleton('App\Helpers\Metrics', function ($app) {
+            return new \App\Helpers\Metrics;
+        });
     }
 }

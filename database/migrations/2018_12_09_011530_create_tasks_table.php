@@ -18,6 +18,7 @@ class CreateTasksTable extends Migration
             $table->string('code', 50);
             $table->string('name');
             $table->text('content');
+            $table->string('custom', 150);
             $table->integer('server_type_id');
             $table->softDeletes();
             $table->timestamps();

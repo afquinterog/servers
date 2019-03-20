@@ -11,6 +11,13 @@ use Laravel\Nova\Http\Requests\NovaRequest;
 class ServerMetric extends Resource
 {
     /**
+     * Indicates if the resource should be displayed in the sidebar.
+     *
+     * @var bool
+     */
+    public static $displayInNavigation = false;
+
+    /**
      * The model the resource corresponds to.
      *
      * @var string
@@ -32,6 +39,16 @@ class ServerMetric extends Resource
     public static $search = [
         'id',
     ];
+
+    /**
+     * Get the displayable label of the resource.
+     *
+     * @return string
+     */
+    public static function label()
+    {
+        return 'Server Metrics';
+    }
 
     /**
      * Get the fields displayed by the resource.

@@ -14,3 +14,13 @@
 Route::get('/', function () {
     return view('welcome');
 });
+
+//Get metrics from server's
+Route::get('/hookServerMetrics', 'ServerController@hookMetrics');
+
+
+// Display all SQL executed in Eloquent
+Event::listen('illuminate.query', function($query)
+{
+    var_dump($query);
+});

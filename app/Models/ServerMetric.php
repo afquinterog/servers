@@ -3,9 +3,22 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Observers\MetricObserver;
 
 class ServerMetric extends Model
 {
+
+    protected $guarded = [];
+
+    /**
+     * The event map for the model.
+     *
+     * @var array
+     */
+    protected $dispatchesEvents = [
+        'created' => MetricObserver::class
+    ];
+    
     /**
      * Get the metric type
      */
@@ -21,4 +34,5 @@ class ServerMetric extends Model
     {
         return $this->belongsTo('App\Models\Server');
     }
+
 }

@@ -8,7 +8,7 @@ use App\Models\Server;
 use Symfony\Component\Process\Process;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 
-class LinkUiCommand extends Command
+class LinkUiCommand 
 {
     use RemoteExecution;
 

@@ -4,14 +4,12 @@ namespace App\Traits;
 
 use Symfony\Component\Process\Process;
 use Symfony\Component\Process\Exception\ProcessFailedException;
+use Illuminate\Support\Facades\Log;
 
 trait RemoteExecution
 {
 
-    static $command =  
-        " envoy run  execute " .  
-        " --route=/home/ubuntu " . 
-        " --server=server " ;
+    static $command =  "envoy run execute" ;
         
     /**
      * Execute a task on remote server
@@ -24,35 +22,39 @@ trait RemoteExecution
      */
     public function executeRemoteTask($ip, $task){
 
-        //Change the actual path to be the main path and get the envoy file
-        chdir( base_path() );
+        if( !env('REMOTE_TASK_DEBUG') ){
+            //Change the actual path to be the main path and get the envoy file
+            chdir( base_path() );
 
-        //Create the envoy file
-        $file = file_get_contents('./Envoy.blade.php.tmpl', true);
+            //Create the envoy file
+            $file = file_get_contents('./Envoy.blade.php.tmpl', true);
 
 
-        $file = str_replace( "TAG_SERVER_IP", $ip, $file);
-        $file = str_replace( "TAG_CONTENT", $task, $file);
+            $file = str_replace( "TAG_SERVER_IP", $ip, $file);
+            $file = str_replace( "TAG_CONTENT", $task, $file);
 
-        file_put_contents('Envoy.blade.php', $file);
+            file_put_contents('Envoy.blade.php', $file);
 
-        echo $command;
+            $process = new Process( self::$command );
+            $process->setTimeout(60);
+            $process->run();
 
-        $process = new Process( $command );
-        $process->setTimeout(60*20);
-        $process->run();
+            if (!$process->isSuccessful()) {
+                $result = $process->getErrorOutput();
+                //throw new ProcessFailedException($process);
+            }
 
-        if (!$process->isSuccessful()) {
-            $result = $process->getErrorOutput();
-            throw new ProcessFailedException($process);
+            $result = $process->getOutput();
+            Log::info($result);
+
+            unlink('Envoy.blade.php');
+        
+            return $result;
+        }else{
+            Log::info("Executing the task {$task} on the ip {$ip}");
+            return "Test remote execution result";
         }
-
-
-        $result = $process->getOutput();
-
-        unlink('Envoy.blade.php');
-    
-        return $result;
+        
         
     }
 }

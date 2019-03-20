@@ -14,8 +14,11 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
         Commands\CreateStagingEnvCommand::class,
-        Commands\CreateUiCommand::class,
-        Commands\ListDevEnvironmentsCommand::class
+        //Commands\CreateUiCommand::class,
+        Commands\ListDevEnvironmentsCommand::class,
+        Commands\AddEnvironmentVariableCommand::class,
+        Commands\ShowServerDetailsCommand::class,
+        Commands\CreateServerCommand::class
     ];
 
     /**
@@ -28,6 +31,7 @@ class Kernel extends ConsoleKernel
     {
         // $schedule->command('inspire')
         //          ->hourly();
+        $schedule->command('telescope:prune')->daily();
     }
 
     /**

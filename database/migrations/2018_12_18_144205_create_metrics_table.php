@@ -13,7 +13,7 @@ class CreateMetricsTable extends Migration
      */
     public function up()
     {
-        Schema::create('metrics', function (Blueprint $table) {
+        Schema::create('server_metrics', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('metric_type_id');
             $table->integer('server_id'); 

@@ -7,6 +7,11 @@ use Laravel\Nova\Fields\Text;
 use Illuminate\Http\Request;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
+use Laravel\Nova\Fields\BelongsTo;
+use Laravel\Nova\Fields\HasMany;
+
+use Eminiarts\Tabs\Tabs;
+
 class ServerType extends Resource
 {
     /**
@@ -31,7 +36,14 @@ class ServerType extends Resource
     public static $search = [
         'name',
     ];
-  
+
+    /**
+     * The relationships that should be eager loaded on index queries.
+     *
+     * @var array
+     */
+    public static $with = ['company'];
+
     /**
      * Get the displayable label of the resource.
      *
@@ -51,8 +63,18 @@ class ServerType extends Resource
     public function fields(Request $request)
     {
         return [
-            ID::make()->sortable(),
-            Text::make('Name')->sortable(),
+            (new Tabs('Server', [
+                'Basic' => [
+                    ID::make()->sortable(),
+                    Text::make('Name')->sortable(),
+                ],
+                'Company' => [
+                    BelongsTo::make('Company')
+                ],
+                'Servers' => [
+                    HasMany::make('Servers')
+                ]
+            ]))
         ];
     }
 

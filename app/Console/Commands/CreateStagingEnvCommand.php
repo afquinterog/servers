@@ -7,6 +7,11 @@ use App\Models\Server;
 use App\Traits\RemoteExecution;
 use Facades\App\Helpers\Aws;
 use Illuminate\Support\Facades\DB;
+use Facades\App\Tasks\TaskRunner;
+use App\Models\Task;
+use App\Jobs\CreateVentureStagingEnvironment;
+use App\Jobs\RunTask;
+use Illuminate\Support\Facades\Log;
 
 class CreateStagingEnvCommand extends Command
 {
@@ -17,12 +22,6 @@ class CreateStagingEnvCommand extends Command
      * @var string
      */
     protected $signature = 'devenv:create-staging-env {--server= : Server unique id}
-                                                 {--schema= : Tenant Schema}
-                                                 {--domain= : Application domain}
-                                                 {--partner-name= : Partner Name}
-                                                 {--syndication-tenant-id= : Syndication tenant id}
-                                                 {--syndication-auth-token= : Syndication authentication token}
-                                                 {--ui-branch= : Branch used on the ui applications}
     ';
 
     /**
@@ -49,39 +48,62 @@ class CreateStagingEnvCommand extends Command
      */
     public function handle()
     {
+
+        $this->info("Starting staging environment creation ...");
+
+        //Get server and task
+        $server = $this->option('server');
+        //$task = $this->option('task');
+
+        $server = Server::findOrFail($server);
+        $task = Task::where('code', 'create-staging-env' )->firstOrFail();
+
+        RunTask::dispatch($server, $task);
+
+        Log::info("Sample message");
+
+        $this->info("Environment creation has been added to the queue!");
+       
+
+        // {--schema= : Tenant Schema}
+        // {--domain= : Application domain}
+        // {--partner-name= : Partner Name}
+        // {--syndication-tenant-id= : Syndication tenant id}
+        // {--syndication-auth-token= : Syndication authentication token}
+        // {--ui-branch= : Branch used on the ui applications}
         //Get options
-        $server = $this->option('server') ;
-        $schema = $this->option('schema') ;
-        $partnerName = $this->option('partner-name') ;
-        $domain = $this->option('domain') ;
-        $syndicationTenantId = $this->option('syndication-tenant-id') ;
-        $syndicationAuthToken = $this->option('syndication-auth-token') ;
-        $uiBranch = $this->option('ui-branch', 'admin') ;
+        // $server = $this->option('server') ;
+        // $schema = $this->option('schema') ;
+        // $partnerName = $this->option('partner-name') ;
+        // $domain = $this->option('domain') ;
+        // $syndicationTenantId = $this->option('syndication-tenant-id') ;
+        // $syndicationAuthToken = $this->option('syndication-auth-token') ;
+        // $uiBranch = $this->option('ui-branch', 'admin') ;
+
+        //Call the task to execute the operation and get the results
 
 
-        $server = Server::find($server);
-        $this->info("Configuring staging env {$server->name} ");
+        // $server = Server::find($server);
+        // $this->info("Configuring staging env {$server->name} ");
 
-        //Launch instance
-        $result = Aws::createStagingInstance();
+        // //Launch instance
+        // $result = Aws::createStagingInstance();
 
-        $instanceId = Aws::getInstanceValue($result, '"InstanceId":' );
+        // $instanceId = Aws::getInstanceValue($result, '"InstanceId":' );
 
-        //Save server in database
-        $this->updateServer($server, $instanceId);
+        // //Save server in database
+        // $this->updateServer($server, $instanceId);
 
-        //Create the schema on shared database
-        $this->createSchemaSharedDatabase($schema);
+        // //Create the schema on shared database
+        // $this->createSchemaSharedDatabase($schema);
 
-        sleep(3);
+        // sleep(3);
 
-        $this->getServerIp($server);
+        // $this->getServerIp($server);
 
-        $this->configureApi($server, $schema,  $partnerName, $syndicationTenantId, $syndicationAuthToken);
+        // $this->configureApi($server, $schema,  $partnerName, $syndicationTenantId, $syndicationAuthToken);
 
-        //$this->configureUi($server, $domain, $uiBranch);
-
-        
+        // $this->configureUi($server, $domain, $uiBranch);
 
     }
 

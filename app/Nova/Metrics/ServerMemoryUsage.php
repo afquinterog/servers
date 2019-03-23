@@ -32,7 +32,7 @@ class ServerMemoryUsage extends Trend
         return [
             12 => '12 Hours',
             24 => '24 Hours',
-            168 => 'Last week',
+            72 => '3 Days',
         ];
     }
 

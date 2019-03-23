@@ -19,7 +19,7 @@ class ServerConnections extends Trend
         $data = ServerMetric::where('server_id', $request->resourceId)
             ->where('metric_type_id', 5);
 
-        return $this->maxByMinutes($request, $data, 'value')->showLatestValue();
+        return $this->maxByHours($request, $data, 'value')->showLatestValue();
     }
 
     /**

@@ -19,7 +19,7 @@ class ServerConnectedIps extends Trend
         $data = ServerMetric::where('server_id', $request->resourceId)
             ->where('metric_type_id', 6);
 
-        return $this->averageByHours($request, $data, 'value')->showLatestValue();
+        return $this->maxByMinutes($request, $data, 'value')->showLatestValue();
     }
 
     /**

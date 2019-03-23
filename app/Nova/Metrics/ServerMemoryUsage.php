@@ -19,7 +19,7 @@ class ServerMemoryUsage extends Trend
         $data = ServerMetric::where('server_id', $request->resourceId)
             ->where('metric_type_id', 2);
 
-        return $this->averageByHours($request, $data, 'value')->showLatestValue();;
+        return $this->averageByHours($request, $data, 'value')->showLatestValue()->suffix('%');
     }
 
     /**

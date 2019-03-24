@@ -85,6 +85,17 @@ class Server extends Model
     }
 
     /**
+     * Ping the server
+     *
+     * @return void
+     */
+    public function ping()
+    {
+        $this->ping_at = now();
+        $this->save();
+    }
+
+    /**
      * Get the server last update
      *
      * @param  string  $value
@@ -148,6 +159,7 @@ class Server extends Model
 
             //Find server 
             $server = Server::findOrFail($request['server']);
+            $server->ping();
 
             foreach ($metrics as $metric) {
                 $server->serverMetrics()->save(new ServerMetric($metric));

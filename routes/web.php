@@ -12,11 +12,13 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('marketing.index');
 });
 
 //Get metrics from server's
 Route::get('/hookServerMetrics', 'ServerController@hookMetrics');
+
+Route::post('/contact', 'ContactController@send');
 
 
 // Display all SQL executed in Eloquent

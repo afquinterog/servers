@@ -4,7 +4,7 @@ namespace Laravel\Nova\Fields;
 
 use Illuminate\Http\Request;
 use Laravel\Nova\Http\Requests\NovaRequest;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\Relation;
 
 trait ResolvesReverseRelation
 {
@@ -61,12 +61,25 @@ trait ResolvesReverseRelation
 
                         $relation = $viaModel->{$field->attribute}();
 
-                        $method = $relation instanceof BelongsTo ? 'getForeignKey' : 'getForeignKeyName';
-
-                        return $relation->{$method}() === $resource->model()->{$this->attribute}()->getForeignKey();
+                        return $this->getRelationForeignKeyName($relation) === $this->getRelationForeignKeyName(
+                                $resource->model()->{$this->attribute}()
+                            );
                     })->attribute ?? '';
         }
 
         return $this->reverseRelation;
+    }
+
+    /**
+     * Get foreign key name for relation.
+     *
+     * @param  \Illuminate\Database\Eloquent\Relations\Relation $relation
+     * @return string
+     */
+    protected function getRelationForeignKeyName(Relation $relation)
+    {
+        return method_exists($relation, 'getForeignKeyName')
+            ? $relation->getForeignKeyName()
+            : $relation->getForeignKey();
     }
 }

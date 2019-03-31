@@ -74,13 +74,6 @@ class MorphTo extends Field
     public $display;
 
     /**
-     * Indicates if the field is nullable.
-     *
-     * @var bool
-     */
-    public $nullable = false;
-
-    /**
      * Indicates if this relationship is searchable.
      *
      * @var bool
@@ -151,7 +144,15 @@ class MorphTo extends Field
      */
     public function resolve($resource, $attribute = null)
     {
-        $value = $resource->{$this->attribute}()->withoutGlobalScopes()->getResults();
+        $value = null;
+
+        if ($resource->relationLoaded($this->attribute)) {
+            $value = $resource->getRelation($this->attribute);
+        }
+
+        if (! $value) {
+            $value = $resource->{$this->attribute}()->withoutGlobalScopes()->getResults();
+        }
 
         [$this->morphToId, $this->morphToType] = [
             optional($value)->getKey(),
@@ -167,6 +168,18 @@ class MorphTo extends Field
                 $value, Nova::resourceForModel($value)
             );
         }
+    }
+
+    /**
+     * Resolve the field's value for display.
+     *
+     * @param  mixed  $resource
+     * @param  string|null  $attribute
+     * @return void
+     */
+    public function resolveForDisplay($resource, $attribute = null)
+    {
+        //
     }
 
     /**
@@ -248,13 +261,13 @@ class MorphTo extends Field
             );
         }
 
-        $foreignKey = $model->{$this->attribute}()->getForeignKey();
+        $foreignKey = $this->getRelationForeignKeyName($model->{$this->attribute}());
 
         if ($model->isDirty([$morphType, $foreignKey])) {
             $model->unsetRelation($this->attribute);
         }
 
-        parent::fillInto($request, $model, $model->{$this->attribute}()->getForeignKey());
+        parent::fillInto($request, $model, $foreignKey);
     }
 
     /**
@@ -463,19 +476,6 @@ class MorphTo extends Field
     }
 
     /**
-     * Indicate that the field should be nullable.
-     *
-     * @param  bool  $nullable
-     * @return $this
-     */
-    public function nullable($nullable = true)
-    {
-        $this->nullable = $nullable;
-
-        return $this;
-    }
-
-    /**
      * Get additional meta information to merge with the field payload.
      *
      * @return array
@@ -491,7 +491,6 @@ class MorphTo extends Field
             'morphToTypes' => $this->morphToTypes,
             'morphToType' => $this->morphToType,
             'morphToId' => $this->morphToId,
-            'nullable' => $this->nullable,
             'searchable' => $this->searchable,
             'reverse' => $this->isReverseRelation(app(NovaRequest::class)),
         ], $this->meta);

@@ -149,8 +149,7 @@ class Server extends Model
     //http://localhost:8000/hookServerMetrics?server=1&disk=25&mem=822/992|82.86|&cpu=90&con=1&ip=1&memc=50&token=pTX7s2h9FlmVB7lWDmAucUaN2A85NHO9JyZcvL2T
     //    
         $token = isset($request['token']) ? $request['token'] : "";
-
-        echo $token . " / " . config('constants.METRICS_TOKEN');
+        
         if ($token == config('constants.METRICS_TOKEN')) {
 
             //Get metrics information array from helperf

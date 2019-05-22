@@ -23,6 +23,7 @@ class CreateServersTable extends Migration
             $table->integer('active')->default(1);
             $table->float('cost')->default(0);
             $table->timestamp('instance_created_at');
+            $table->string('token', 25);
             $table->timestamp('ping_at');
             $table->softDeletes();
             $table->timestamps();

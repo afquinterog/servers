@@ -17,7 +17,7 @@ do
   dat+=$cpu
   dat+=$con
   echo "$dat"
-  url="https://servers.oru.com.co/hookServerMetrics?server=1&disk=$output&mem=$mem&cpu=$cpu&con=$con&ip=$ip&memc=$memc&token=pTX7s2h9FlmVB7lWDmAucUaN2A85NHO9JyZcvL2T"
+  url="https://servers.mkitdigital.com/hookServerMetrics?server=1&disk=$output&mem=$mem&cpu=$cpu&con=$con&ip=$ip&memc=$memc&token=pTX7s2h9FlmVB7lWDmAucUaN2A85NHO9JyZcvL2T"
   echo $url
   curl $url
 done

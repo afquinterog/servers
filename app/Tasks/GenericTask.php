@@ -16,7 +16,7 @@ abstract class GenericTask
     }
     
 
-    public abstract function run($server, $task);
+    public abstract function run($instance, $task);
 
     public abstract function afterRun($result);
     

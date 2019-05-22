@@ -12,16 +12,24 @@ class TaskRunner
 {
     use RemoteExecution;
 
-    public function run($server, $task)
+
+    public function custom($server, $script){
+        \Log::info("server=".$server);
+        \Log::info("script=".$script);
+        $result = $this->executeRemoteTask($server->ip, $script);
+        return $result;
+    }
+
+    public function run($instance, $task)
     {
         //Replace task with server environment variables
         if ($task->content) {
-            $this->injectServerVariablesInTask($server, $task);
+            $this->injectInstanceVariablesInTask($instance, $task);
         }
 
         if ($task->custom) {
             $customTask = new $task->custom();
-            $result = $customTask->run($server, $task);
+            $result = $customTask->run($instance, $task);
         } else {
             $result = $this->executeRemoteTask($server->ip, $task->content);
         }
@@ -31,10 +39,10 @@ class TaskRunner
         
         //Save task execution results associated to server
         $taskResult = new TaskResult(['results' => $result, 'task_id' => $task->id]);
-        $server->tasks()->save($taskResult);
+        $instance->server->tasks()->save($taskResult);
 
         //Notify to subscribers
-        $notifications = $server->serverParameters()->where('name', 'SERVER_NOTIFICATIONS')->first();
+        $notifications = $instance->application->applicationParameters()->where('name', 'SERVER_NOTIFICATIONS')->first();
 
         if ($notifications) {
             $notifications = explode(',', $notifications->value);
@@ -58,11 +66,11 @@ class TaskRunner
      * @param $task
      * @return task injected with server variables
      */
-    public function injectServerVariablesInTask($server, $task)
+    public function injectInstanceVariablesInTask($instance, $task)
     {
         $special = array("{", "}");
 
-        foreach ($server->serverParameters as $parameter) {
+        foreach ($instance->application->applicationParameters as $parameter) {
             $task->content = str_replace($parameter->name, $parameter->value, $task->content);
         }
 

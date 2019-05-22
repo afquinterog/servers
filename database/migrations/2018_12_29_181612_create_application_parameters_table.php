@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateServerParametersTable extends Migration
+class CreateApplicationParametersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,14 @@ class CreateServerParametersTable extends Migration
      */
     public function up()
     {
-        Schema::create('server_parameters', function (Blueprint $table) {
+        Schema::create('application_parameters', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('server_id')->index();
             $table->string('name', 100); 
             $table->string('value', 200);
             $table->timestamps();
 
-            $table->unique( array('server_id','name') );
+            $table->unique( array('application_id','name') );
         });
     }
 

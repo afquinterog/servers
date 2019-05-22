@@ -66,11 +66,11 @@ class Server extends Model
     }
 
     /**
-     * Get the server parameters
+     * Get the instances running on the server
      */
-    public function serverParameters()
+    public function instances()
     {
-        return $this->hasMany('App\Models\ServerParameter');
+        return $this->hasMany('App\Models\Instance');
     }
 
     /**

@@ -18,6 +18,10 @@ Route::get('/', function () {
 //Get metrics from server's
 Route::get('/hookServerMetrics', 'ServerController@hookMetrics');
 
+//Github hook
+Route::post('/hookGithubDeployment', 'DeploymentController@hookGithub');
+
+
 Route::post('/contact', 'ContactController@send');
 
 

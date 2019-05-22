@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class ServerParameter extends Model
+class ApplicationParameter extends Model
 {
 
     /**
@@ -17,8 +17,8 @@ class ServerParameter extends Model
     /**
      * Get the server 
      */
-    public function server()
+    public function application()
     {
-        return $this->belongsTo('App\Models\Server');
+        return $this->belongsTo('App\Models\Application');
     }
 }

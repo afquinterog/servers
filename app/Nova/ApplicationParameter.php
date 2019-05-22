@@ -8,14 +8,14 @@ use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
-class ServerParameter extends Resource
+class ApplicationParameter extends Resource
 {
     /**
      * The model the resource corresponds to.
      *
      * @var string
      */
-    public static $model = 'App\Models\ServerParameter';
+    public static $model = 'App\Models\ApplicationParameter';
 
     /**
      * The single value that should be used to represent the resource when being displayed.
@@ -80,7 +80,7 @@ class ServerParameter extends Resource
             ID::make()->sortable(),
             Text::make('Name')->sortable(),
             Text::make('Value')->sortable(),
-            BelongsTo::make('Server'),
+            BelongsTo::make('Application'),
         ];
     }
 

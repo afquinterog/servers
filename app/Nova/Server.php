@@ -59,20 +59,6 @@ class Server extends Resource
     public function fields(Request $request)
     {
         return [
-            // ID::make()->sortable(),
-            // Text::make('Name')->sortable(),
-            // Text::make('LastUpdate')->sortable()->onlyOnIndex(),
-            // Text::make('Ip')->sortable()->hideWhenCreating(),
-            // Text::make('Price')->hideWhenCreating(),
-            // Status::make('Status')
-            //     ->loadingWhen(['creating'])
-            //     ->failedWhen(['stopped']),
-            // Boolean::make('Active')->hideWhenCreating()
-            //     ->trueValue(1)
-            //     ->falseValue(0),
-            // BelongsTo::make('ServerType'),
-            // HasMany::make('Parameters', 'ServerParameters', 'App\Nova\ServerParameter'),
-            // HasMany::make('Metrics', 'ServerMetrics', 'App\Nova\ServerMetric'),
 
             (new Tabs('Server', [
                 'Basic'    => [
@@ -92,7 +78,6 @@ class Server extends Resource
                         ->falseValue(0),
                     BelongsTo::make('ServerType'),
                 ],
-                'Parameters' => HasMany::make('Parameters', 'ServerParameters', 'App\Nova\ServerParameter'),
                 'Alerts' => HasMany::make('Alerts', 'ServerAlerts', 'App\Nova\ServerAlert'),
                 'Metrics' => HasMany::make('Metrics', 'ServerMetrics', 'App\Nova\ServerMetric'),
                 'Task Results' => HasMany::make('Tasks', 'tasks', 'App\Nova\ServerTaskResult'),

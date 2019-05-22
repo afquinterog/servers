@@ -9,6 +9,7 @@
                 class="ml-auto min-w-24 h-6 text-xs no-appearance bg-40"
                 :options="ranges"
                 :selected="selectedRangeKey"
+                :value="selectedRangeKey"
             />
         </div>
 

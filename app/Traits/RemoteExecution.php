@@ -41,7 +41,7 @@ trait RemoteExecution
 
             if (!$process->isSuccessful()) {
                 $result = $process->getErrorOutput();
-                //throw new ProcessFailedException($process);
+                throw new ProcessFailedException($process);
             }
 
             $result = $process->getOutput();

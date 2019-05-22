@@ -15,6 +15,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         \App\Models\ServerMetric::observe(\App\Observers\MetricObserver::class);
+        \App\Models\Server::observe(\App\Observers\ServerObserver::class);
     }
 
     /**

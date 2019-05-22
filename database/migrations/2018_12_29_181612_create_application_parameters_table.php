@@ -15,7 +15,7 @@ class CreateApplicationParametersTable extends Migration
     {
         Schema::create('application_parameters', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('server_id')->index();
+            $table->integer('application_id')->index();
             $table->string('name', 100); 
             $table->string('value', 200);
             $table->timestamps();

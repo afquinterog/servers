@@ -18,7 +18,9 @@ class Deploy
 
         $deploymentFile = self::DEPLOYMENT_FILE;
 
-        $remoteTask= "cd {$instance->route} && {$deploymentFile}";
+        $addServerKey = "eval $(ssh-agent) ; ssh-add /home/ubuntu/keys/{$instanced->server->key};";
+
+        $remoteTask= $addServerKey . "cd {$instance->route} && {$deploymentFile}";
 
         return $remoteTask;
 

@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Log;
 trait RemoteExecution
 {
 
-    static $command =  "envoy run execute" ;
+    static $command =  "/home/ubuntu/.composer/vendor/bin/envoy run execute" ;
         
     /**
      * Execute a task on remote server

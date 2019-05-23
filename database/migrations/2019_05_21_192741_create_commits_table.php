@@ -24,7 +24,7 @@ class CreateCommitsTable extends Migration
             $table->string('url', 200);
             $table->string('previous', 200);
             $table->string('actual', 200);
-            $table->integer('deployment_id')->index();
+            $table->integer('application_id')->index();
             $table->timestamps();
         });
     }

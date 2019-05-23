@@ -16,7 +16,7 @@ class TaskRunner
     public function custom($server, $script){
         \Log::info("server=".$server);
         \Log::info("script=".$script);
-        $result = $this->executeRemoteTask($server->ip, $script);
+        $result = $this->executeRemoteTask($server->ip, $server->key, $script);
         return $result;
     }
 

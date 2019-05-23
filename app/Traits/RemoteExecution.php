@@ -20,9 +20,11 @@ trait RemoteExecution
      * 
      * @return string result of the command
      */
-    public function executeRemoteTask($ip, $task){
+    public function executeRemoteTask($ip, $key, $task){
 
         if( !env('REMOTE_TASK_DEBUG') ){
+
+            $previous = "eval $(ssh-agent); ssh-add /home/ubuntu/keys/{$key};";
             //Change the actual path to be the main path and get the envoy file
             chdir( base_path() );
 
@@ -35,7 +37,7 @@ trait RemoteExecution
 
             file_put_contents('Envoy.blade.php', $file);
 
-            $process = new Process( self::$command );
+            $process = new Process( $previous . self::$command );
             $process->setTimeout(60);
             $process->run();
 

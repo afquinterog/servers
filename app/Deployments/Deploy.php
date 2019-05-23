@@ -20,7 +20,7 @@ class Deploy
 
         //$addServerKey = "eval $(ssh-agent) ; ssh-add /home/ubuntu/keys/{$instance->server->key};";
 
-        $remoteTask= $addServerKey . "cd {$instance->route} && {$deploymentFile}";
+        $remoteTask= "cd {$instance->route} && {$deploymentFile}";
 
         return $remoteTask;
 

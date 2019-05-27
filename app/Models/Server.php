@@ -114,7 +114,7 @@ class Server extends Model
 
     /**
      * Check if the metric triggered a server alert
-     * 
+     *
      * @param  array $messages The messages to store
      * @return void
      */
@@ -124,7 +124,7 @@ class Server extends Model
         $alerts = $this->serverAlerts()->ofType($metric->metric_type_id)->get();
 
         foreach ($alerts as $alert) {
-            \Log::info($alert->limit . "/" . $alert->message);
+
             if ($metric->value > $alert->limit) {
                 $msg = str_replace("SERVER_VALUE", $this->name, $alert->message);
                 $msg = str_replace("ACTUAL_VALUE", $metric->value, $msg);
@@ -133,13 +133,14 @@ class Server extends Model
                     $user->notify(new ServerThresholdReached($this->name, $msg));
                 }
             }
+
         }
     }
 
 
     /**
      * Hook to get server metrics
-     * 
+     *
      * @param  array $messages The messages to store
      * @return void
      */
@@ -147,16 +148,14 @@ class Server extends Model
     {
     //SAmple call
     //http://localhost:8000/hookServerMetrics?server=1&disk=25&mem=822/992|82.86|&cpu=90&con=1&ip=1&memc=50&token=pTX7s2h9FlmVB7lWDmAucUaN2A85NHO9JyZcvL2T
-    //    
+    //
         $token = isset($request['token']) ? $request['token'] : "";
-        
+
         if ($token == config('constants.METRICS_TOKEN')) {
 
-            //Get metrics information array from helperf
             $metricsHelper = resolve('App\Helpers\Metrics');
             $metrics = $metricsHelper->parseServerInformation($request);
 
-            //Find server 
             $server = Server::findOrFail($request['server']);
             $server->ping();
 

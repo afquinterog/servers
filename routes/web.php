@@ -21,12 +21,10 @@ Route::get('/hookServerMetrics', 'ServerController@hookMetrics');
 //Github hook
 Route::post('/hookGithubDeployment', 'DeploymentController@hookGithub');
 
-
 Route::post('/contact', 'ContactController@send');
 
 
 // Display all SQL executed in Eloquent
 // Event::listen('illuminate.query', function($query)
-// {
-//     var_dump($query);
+// {//     var_dump($query);
 // });

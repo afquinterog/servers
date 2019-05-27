@@ -22,6 +22,7 @@ class CreateDeploymentsTable extends Migration
             $table->string('previous', 200);
             $table->string('actual', 200);
             $table->text('message');
+            $table->text('result');
             $table->timestamps();
         });
     }

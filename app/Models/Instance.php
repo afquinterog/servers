@@ -34,7 +34,10 @@ class Instance extends Model
         return $this->hasMany('App\Models\Deployment');
     }
 
-    public function markUpdated($updated){
+    /**
+     * Mark the instance as out of date so new deployments needs to be pushed on it
+     */
+    public function markUpToDate($updated){
         $this->updated = 0;
         $this->save();
     }

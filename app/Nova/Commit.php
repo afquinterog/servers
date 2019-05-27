@@ -1,11 +1,10 @@
 <?php
 
-namespace App\Nova;
+namespace Nova;
 
 use Laravel\Nova\Fields\ID;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\DateTime;
-use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
@@ -55,7 +54,6 @@ class Commit extends Resource
             Text::make('branch'),
             Text::make('author')->sortable(),
             DateTime::make('timestamp')->sortable(),
-            Text::make('message')->hideFromIndex(),
             BelongsTo::make('Application'),
         ];
 

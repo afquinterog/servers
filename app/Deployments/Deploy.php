@@ -44,15 +44,13 @@ class Deploy
      */
     public function apply(Commit $commit){
 
-        //get application
         $application = $commit->application;
 
-        //get application instances
         foreach($application->instances as $instance){
             \Log::info('check ' . $instance->id . " / " . $instance->branch);
 
-            $instance->autodeploy ? dispatch( new DeployOnInstance($instance, $commit) ) : $instance->markUpdated(0);
-            
+            $instance->autodeploy ? dispatch( new DeployOnInstance($instance, $commit) ) : $instance->markUpToDate(0);
+
         }
 
     }

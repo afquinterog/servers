@@ -1,6 +1,6 @@
 <?php
 
-namespace Nova;
+namespace App\Nova;
 
 use App\Nova\Resource;
 use Laravel\Nova\Fields\ID;

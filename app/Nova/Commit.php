@@ -2,6 +2,7 @@
 
 namespace Nova;
 
+use App\Nova\Resource;
 use Laravel\Nova\Fields\ID;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\DateTime;

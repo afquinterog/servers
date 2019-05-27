@@ -14,8 +14,6 @@ class MetricObserver
      */
     public function created(ServerMetric $serverMetric)
     {
-        \Log::info("metric created = " . $serverMetric->id . " /" . $serverMetric->value);
-        //Get the server
         $server = $serverMetric->server()->first();
         $server->checkMetric($serverMetric);
     }

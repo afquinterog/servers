@@ -48,9 +48,10 @@ class Instance extends Resource
     {
         return [
             ID::make()->sortable(),
-            Text::make('branch'),
-            Text::make('route'),
-            Boolean::make('updated'),
+            Text::make('Branch'),
+            Text::make('Route'),
+            Boolean::make('Updated'),
+            Boolean::make('Autodeploy'),
             BelongsTo::make('Application'),
             BelongsTo::make('Server'),
 

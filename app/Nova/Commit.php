@@ -52,7 +52,7 @@ class Commit extends Resource
     {
         return [
             ID::make()->sortable(),
-            Text::make('Ssh_repo')->hideFromI ndex(),
+            Text::make('Ssh_repo')->hideFromIndex(),
             Text::make('branch'),
             Text::make('author')->sortable(),
             DateTime::make('timestamp')->sortable(),

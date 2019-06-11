@@ -11,9 +11,7 @@
 |
 */
 
-Route::get('/', function () {
-    return view('marketing.index');
-});
+Route::get('/', 'ServerController@index');
 
 //Get metrics from server's
 Route::get('/hookServerMetrics', 'ServerController@hookMetrics');

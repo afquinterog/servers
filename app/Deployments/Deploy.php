@@ -8,7 +8,10 @@ use App\Models\Commit;
 use App\Jobs\DeployOnInstance;
 
 /**
- * Handle commmon operations for the deployment process
+ * Handle commmon operations for the deployment process.
+ * The deployment process can be done on different ways deppending on the application technology
+ * so we allow the application to define a deploy.sh in the root file of the project that will take care of the
+ * depoyment steps. In the future this can be improved.
  */
 class Deploy
 {
@@ -37,6 +40,7 @@ class Deploy
         $deployment->result = $result;
 
         $instance->deployments()->save($deployment);
+        return $deployment;
     }
 
     /**

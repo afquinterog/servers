@@ -24,6 +24,14 @@ class Application extends Model
     }
 
     /**
+     * Get the application notifications
+     */
+    public function notifications()
+    {
+        return $this->hasMany('App\Models\ApplicationNotification');
+    }
+
+    /**
      * The application deployments
      */
     public function deployments()
@@ -40,6 +48,14 @@ class Application extends Model
     }
 
     /**
+     * Get application notifications
+     */
+    public function emailNotifications()
+    {
+        return $this->hasMany('App\Models\ApplicationParameter')->where('name','EMAIL_NOTIFICATIONS');
+    }
+
+    /**
      * Get the company
      */
     public function company()
@@ -47,5 +63,5 @@ class Application extends Model
         return $this->belongsTo('App\Models\Company');
     }
 
-    
+
 }

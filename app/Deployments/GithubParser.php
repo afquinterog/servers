@@ -22,7 +22,7 @@ class GithubParser
         $commit->author = $data['head_commit']['committer']['name'];
         $commit->message = $data['head_commit']['message'] ?? "";
         $commit->timestamp = Carbon::parse($data['head_commit']['timestamp']);
-        $commit->url = $data['head_commit']['url'] ?? ""; 
+        $commit->url = $data['head_commit']['url'] ?? "";
         $commit->previous = $data['before'];
         $commit->actual = $data['after'];
 

@@ -35,9 +35,9 @@ class CompanyPolicy
     public function view(User $user, Company $company)
     {
         if(isset( $user->company_id) ){
-            return $user->company->id == $company->id;    
+            return $user->company->id == $company->id;
         }
-        
+
         return true;
     }
 
@@ -73,7 +73,7 @@ class CompanyPolicy
      */
     public function delete(User $user, Company $company)
     {
-        return true;
+        return false;
     }
 
     /**

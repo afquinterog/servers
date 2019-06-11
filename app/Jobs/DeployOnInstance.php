@@ -2,17 +2,18 @@
 
 namespace App\Jobs;
 
+use App\Models\Task;
+use App\Models\Commit;
+use App\Models\Instance;
+use App\Models\Deployment;
 use Illuminate\Bus\Queueable;
+use Facades\App\Tasks\TaskRunner;
+use App\Events\DeploymentExecuted;
+use Facades\App\Deployments\Deploy;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
-use Facades\App\Tasks\TaskRunner;
-use App\Models\Instance;
-use App\Models\Commit;
-use App\Models\Task;
-use App\Models\Deployment;
-use Facades\App\Deployments\Deploy;
 
 /**
  * Deploy code on a specific instance
@@ -25,7 +26,7 @@ class DeployOnInstance implements ShouldQueue
     /**
      * The instance
      *
-     * @var Instance 
+     * @var Instance
      */
     protected $instance;
 
@@ -54,26 +55,19 @@ class DeployOnInstance implements ShouldQueue
      */
     public function handle()
     {
-        \Log::info('Deploying commit='. $this->commit->id .  'instance' . $this->instance->id);
-
-        
         $remoteTask = Deploy::script($this->instance, $this->commit);
-
-        \Log::info('execute task on remote server=' . $remoteTask);
 
         $result = TaskRunner::custom($this->instance->server, $remoteTask );
 
-        \Log::info($result);
+        $deployment = Deploy::history($this->instance, $this->commit, $result );
 
-        Deploy::history($this->instance, $this->commit, $result );
-
-
+        event( new DeploymentExecuted($deployment));
 
         //$remoteTask= "cd {$route} && git reset --hard {$commit}";
         //$remoteTask= "cd {$route} && ./deploy.sh";
 
         // \Log::info('execute task on remote server=' . $remoteTask);
-        
+
         // $result = TaskRunner::custom($this->instance->server, $remoteTask );
 
         // \Log::info($result);
@@ -89,10 +83,5 @@ class DeployOnInstance implements ShouldQueue
         // $deployment->result = $result;
 
         // $this->instance->deployments()->save($deployment);
-
-
-
-        
-
     }
 }

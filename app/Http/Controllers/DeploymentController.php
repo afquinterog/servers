@@ -17,12 +17,8 @@ class DeploymentController extends Controller
         $token = $request->input('token', ' ' );
 
         if($token == env('DEPLOY_TOKEN') ){
-
             $commit = $githubParser->parse($data);
-
             Deploy::apply($commit);
-            //dispatch( new ProcessGithubDeploy($branch, $committer, $repo) );
-            //dispatch(new ProcessDeploy(CommitMessage $message ) );
         }
     }
 }

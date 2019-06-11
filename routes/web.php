@@ -23,10 +23,10 @@ Route::post('/hookGithubDeployment', 'DeploymentController@hookGithub');
 
 Route::post('/contact', 'ContactController@send');
 
-Route::get('/test', function(){
-    $deployment = \App\Models\Deployment::find(1);
-    event( new \App\Events\DeploymentExecuted($deployment));
-} );
+// Route::get('/test', function(){
+//     $deployment = \App\Models\Deployment::find(1);
+//     event( new \App\Events\DeploymentExecuted($deployment));
+// } );
 
 
 // Display all SQL executed in Eloquent

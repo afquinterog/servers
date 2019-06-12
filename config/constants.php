@@ -19,7 +19,7 @@ return [
         'option_textarea' => '17',
     ],
 
-    'DEPLOY_TOKEN' => env('DEPLOY_TOKEN')
+    'DEPLOY_TOKEN' => env('DEPLOY_TOKEN'),
 
     'METRICS_TOKEN' => env('METRICS_TOKEN'),
 

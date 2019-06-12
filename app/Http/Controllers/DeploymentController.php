@@ -16,7 +16,7 @@ class DeploymentController extends Controller
         $data = $request->all();
         $token = $request->input('token', ' ' );
 
-        if($token == env('DEPLOY_TOKEN') ){
+        if($token == config('constants.DEPLOY_TOKEN') ){
             $commit = $githubParser->parse($data);
             Deploy::apply($commit);
         }

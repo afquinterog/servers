@@ -9,7 +9,7 @@ return [
         'SSH_KEY' => 'venture-aws-key',
         'STAGING_SERVER_TYPE' => 1
     ],
-    
+
 
     'options' => [
         'option_attachment' => '13',
@@ -18,6 +18,8 @@ return [
         'option_ratings' => '16',
         'option_textarea' => '17',
     ],
+
+    'DEPLOY_TOKEN' => env('DEPLOY_TOKEN')
 
     'METRICS_TOKEN' => env('METRICS_TOKEN'),
 

@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateApplicationNotificationsTable extends Migration
+class CreateServerEventsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,11 @@ class CreateApplicationNotificationsTable extends Migration
      */
     public function up()
     {
-        Schema::create('application_notifications', function (Blueprint $table) {
+        Schema::create('server_events', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->integer('application_id')->unsigned();
-            $table->string('email', 100);
+            $table->integer('server_id')->unsigned();
+            $table->dateTime('event_date');
+            $table->text('observation');
             $table->timestamps();
         });
     }
@@ -28,6 +29,6 @@ class CreateApplicationNotificationsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('application_notifications');
+        Schema::dropIfExists('server_events');
     }
 }

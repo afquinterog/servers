@@ -12,11 +12,11 @@ use Illuminate\Http\Request;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
 use Eminiarts\Tabs\Tabs;
-use Eminiarts\Tabs\TabsOnEdit; 
+use Eminiarts\Tabs\TabsOnEdit;
 
 class Server extends Resource
 {
-    use TabsOnEdit; 
+    use TabsOnEdit;
 
     /**
      * The model the resource corresponds to.
@@ -78,16 +78,18 @@ class Server extends Resource
                         ->falseValue(0),
                     BelongsTo::make('ServerType'),
                 ],
+                __('Events') => HasMany::make('Events', 'ServerEvents', 'App\Nova\ServerEvent'),
                 'Alerts' => HasMany::make('Alerts', 'ServerAlerts', 'App\Nova\ServerAlert'),
                 'Metrics' => HasMany::make('Metrics', 'ServerMetrics', 'App\Nova\ServerMetric'),
                 'Task Results' => HasMany::make('Tasks', 'tasks', 'App\Nova\ServerTaskResult'),
 
-            ]))->withToolbar()
-            
+
+            ]))->withToolbar()->defaultSearch(true)
+
 
         ];
 
-       
+
     }
 
     /**

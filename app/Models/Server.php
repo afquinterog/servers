@@ -50,6 +50,14 @@ class Server extends Model
     }
 
     /**
+     * Get the server events
+     */
+    public function serverEvents()
+    {
+        return $this->hasMany('App\Models\ServerEvent')->orderBy('event_date','desc');
+    }
+
+    /**
      * Get the server alerts
      */
     public function serverAlerts()

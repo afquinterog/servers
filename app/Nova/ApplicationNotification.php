@@ -6,28 +6,30 @@ use Laravel\Nova\Fields\ID;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\BelongsTo;
-use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Http\Requests\NovaRequest;
-use Eminiarts\Tabs\Tabs;
-use Eminiarts\Tabs\TabsOnEdit;
 
-class Application extends Resource
+class ApplicationNotification extends Resource
 {
-    use TabsOnEdit;
-
     /**
      * The model the resource corresponds to.
      *
      * @var string
      */
-    public static $model = 'App\Models\Application';
+    public static $model = 'App\Models\ApplicationNotification';
+
+    /**
+     * Indicates if the resource should be displayed in the sidebar.
+     *
+     * @var bool
+     */
+    public static $displayInNavigation = false;
 
     /**
      * The single value that should be used to represent the resource when being displayed.
      *
      * @var string
      */
-    public static $title = 'name';
+    public static $title = 'id';
 
     /**
      * The columns that should be searched.
@@ -35,8 +37,29 @@ class Application extends Resource
      * @var array
      */
     public static $search = [
-        'name'
+        'id',
+        'email'
     ];
+
+    /**
+     * Get the displayable label of the resource.
+     *
+     * @return string
+     */
+    public static function label()
+    {
+        return __('Notifications');
+    }
+
+    /**
+     * Get the displayable singular label of the resource.
+     *
+     * @return string
+     */
+    public static function singularLabel()
+    {
+        return __('Notification');
+    }
 
     /**
      * Get the fields displayed by the resource.
@@ -47,20 +70,9 @@ class Application extends Resource
     public function fields(Request $request)
     {
         return [
-            (new Tabs('Application', [
-                'Basic' => [
-                    ID::make()->sortable(),
-                    Text::make('Name')->sortable(),
-                    Text::make('Ssh_repo')->sortable(),
-                    BelongsTo::make('Company'),
-                ],
-                'Commits' => HasMany::make('Commits', 'commits', 'App\Nova\Commit'),
-                'Instances' => HasMany::make('Instances', 'instances', 'App\Nova\Instance'),
-                'Deployments' => HasMany::make('Deployments', 'deployments', 'App\Nova\Deployment'),
-                'Parameters' => HasMany::make('Parameters', 'ApplicationParameters', 'App\Nova\ApplicationParameter'),
-                __('Notifications') => HasMany::make('Notifications', 'Notifications', 'App\Nova\ApplicationNotification'),
-
-            ]))->withToolbar()->defaultSearch(true),
+            ID::make()->sortable(),
+            Text::make('Email'),
+            BelongsTo::make('Application'),
         ];
     }
 
